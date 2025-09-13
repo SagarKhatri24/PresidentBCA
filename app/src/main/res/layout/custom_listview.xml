@@ -7,16 +7,13 @@
 
     <ImageView
         android:id="@+id/custom_listview_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"/>
 
     <TextView
+        style="@style/text_20"
         android:id="@+id/custom_listview_name"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="10dp"
-        android:textSize="18dp"
-        android:textColor="@color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_marginHorizontal="@dimen/_10sdp"/>
 
 </LinearLayout>

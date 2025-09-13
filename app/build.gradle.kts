@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.constraintlayout)
 
     implementation(libs.glide)
+    implementation(libs.sdp)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
