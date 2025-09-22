@@ -15,6 +15,16 @@
         android:theme="@style/Theme.PresidentBCA"
         android:usesCleartextTraffic="true">
         <activity
+            android:theme="@style/noactionbar"
+            android:name=".BottomNavActivity"
+            android:exported="false"
+            android:label="@string/title_activity_bottom_nav" />
+        <activity
+            android:name=".NavDemoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_nav_demo"
+            android:theme="@style/Theme.PresidentBCA.NoActionBar" />
+        <activity
             android:name=".TabDemoActivity"
             android:exported="false" />
         <activity
@@ -31,7 +41,7 @@
         </activity>
         <activity
             android:name=".RecyclerViewActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".CategoryDetailActivity"
             android:exported="false" />
