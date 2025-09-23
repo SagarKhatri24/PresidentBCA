@@ -15,10 +15,13 @@
         android:theme="@style/Theme.PresidentBCA"
         android:usesCleartextTraffic="true">
         <activity
-            android:theme="@style/noactionbar"
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <activity
             android:name=".BottomNavActivity"
             android:exported="false"
-            android:label="@string/title_activity_bottom_nav" />
+            android:label="@string/title_activity_bottom_nav"
+            android:theme="@style/noactionbar" />
         <activity
             android:name=".NavDemoActivity"
             android:exported="false"
