@@ -1,5 +1,7 @@
 package president.bca;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
     String sCity = "";
 
     ArrayList<String> arrayList;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class SignupActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        db = openOrCreateDatabase("President.db",MODE_PRIVATE,null);
+        String tableCreate = "CREATE TABLE IF NOT EXISTS USERS(USERID INTEGER PRIMARY KEY AUTOINCREMENT,NAME VARCHAR(50), EMAIL VARCHAR(50), CONTACT BIGINT(10), PASSWORD VARCHAR(20),GENDER VARCHAR(10), CITY VARCHAR(50) )";
+        db.execSQL(tableCreate);
 
         binding.signupGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -128,7 +135,18 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Please Select City", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(SignupActivity.this, "Signup Successfully", Toast.LENGTH_SHORT).show();
+                    String selectQuery = "SELECT * FROM USERS WHERE EMAIL='"+binding.signupEmail.getText().toString()+"' OR CONTACT='"+binding.signupContact.getText().toString()+"'";
+                    Cursor cursor = db.rawQuery(selectQuery,null);
+                    if(cursor.getCount()>0){
+                        Toast.makeText(SignupActivity.this, "Email Id/Contact No. Already Registered", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        //Toast.makeText(SignupActivity.this, "Signup Successfully", Toast.LENGTH_SHORT).show();
+                        String insertQuery = "INSERT INTO USERS VALUES (NULL,'"+binding.signupName.getText().toString()+"','"+binding.signupEmail.getText().toString()+"','"+binding.signupContact.getText().toString()+"','"+binding.signupPassword.getText().toString()+"','"+sGender+"','"+sCity+"')";
+                        db.execSQL(insertQuery);
+                        Toast.makeText(SignupActivity.this, "Signup Successfully", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    }
                 }
             }
         });

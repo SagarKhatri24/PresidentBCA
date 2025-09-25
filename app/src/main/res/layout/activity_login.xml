@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <EditText
+        android:id="@+id/login_email"
+        style="@style/edit_15"
+        android:hint="Email Id/Contact No"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/login_password"
+        style="@style/edit_15"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:maxLength="10" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:backgroundTint="@color/blue"
+        android:text="Login"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp" />
+
+    <Button
+        android:id="@+id/login_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:backgroundTint="@color/blue"
+        android:text="Signup"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp" />
+
+</LinearLayout>
