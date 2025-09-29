@@ -3,9 +3,13 @@ package president.bca;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -145,23 +149,105 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(ProfileActivity.this, "Please Select City", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    String selectQuery = "SELECT * FROM USERS WHERE EMAIL='"+binding.profileEmail.getText().toString()+"' OR CONTACT='"+binding.profileContact.getText().toString()+"'";
+                    String selectQuery = "SELECT * FROM USERS WHERE USERID='"+sp.getString(ConstantSp.USERID,"")+"'";
                     Cursor cursor = db.rawQuery(selectQuery,null);
                     if(cursor.getCount()>0){
-                        Toast.makeText(ProfileActivity.this, "Email Id/Contact No. Already Registered", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(profileActivity.this, "profile Successfully", Toast.LENGTH_SHORT).show();
+                        String insertQuery = "UPDATE USERS SET NAME='"+binding.profileName.getText().toString()+"',EMAIL='"+binding.profileEmail.getText().toString()+"',CONTACT='"+binding.profileContact.getText().toString()+"',PASSWORD='"+binding.profilePassword.getText().toString()+"',GENDER='"+sGender+"',CITY='"+sCity+"' WHERE USERID='"+sp.getString(ConstantSp.USERID,"")+"'";
+                        db.execSQL(insertQuery);
+                        Toast.makeText(ProfileActivity.this, "Profile Update Successfully", Toast.LENGTH_SHORT).show();
+
+                        sp.edit().putString(ConstantSp.NAME,binding.profileName.getText().toString()).commit();
+                        sp.edit().putString(ConstantSp.EMAIL,binding.profileEmail.getText().toString()).commit();
+                        //sp.edit().remove(ConstantSp.CONTACT).commit();
+                        sp.edit().putString(ConstantSp.CONTACT,binding.profileContact.getText().toString()).commit();
+                        sp.edit().putString(ConstantSp.PASSWORD,binding.profilePassword.getText().toString()).commit();
+                        sp.edit().putString(ConstantSp.GENDER,sGender).commit();
+                        sp.edit().putString(ConstantSp.CITY,sCity).commit();
+
+                        setData(false);
                     }
                     else {
-                        //Toast.makeText(profileActivity.this, "profile Successfully", Toast.LENGTH_SHORT).show();
-                        String insertQuery = "INSERT INTO USERS VALUES (NULL,'"+binding.profileName.getText().toString()+"','"+binding.profileEmail.getText().toString()+"','"+binding.profileContact.getText().toString()+"','"+binding.profilePassword.getText().toString()+"','"+sGender+"','"+sCity+"')";
-                        db.execSQL(insertQuery);
-                        Toast.makeText(ProfileActivity.this, "profile Successfully", Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        Toast.makeText(ProfileActivity.this, "Invalid User", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
 
+        binding.profileDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                builder.setTitle("Account Delete");
+                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setMessage("Are You Sure Want To Delete Account!");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String deleteQuery = "DELETE FROM USERS WHERE USERID='"+sp.getString(ConstantSp.USERID,"")+"'";
+                        db.execSQL(deleteQuery);
+
+                        sp.edit().clear().commit();
+                        Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
         setData(false);
+
+        binding.profileLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                builder.setTitle("Logout");
+                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setMessage("Are You Sure Want To Logout!");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        sp.edit().clear().commit();
+                        Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                builder.setNeutralButton("Rate Us", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
     }
 
@@ -216,4 +302,11 @@ public class ProfileActivity extends AppCompatActivity {
         binding.profileCity.setSelection(iCityPosition);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        finish();
+    }
+
 }

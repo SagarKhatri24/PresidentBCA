@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                             sp.edit().putString(ConstantSp.USERID,sUserId).commit();
                             sp.edit().putString(ConstantSp.NAME,sName).commit();
                             sp.edit().putString(ConstantSp.EMAIL,sEmail).commit();
+                            //sp.edit().remove(ConstantSp.CONTACT).commit();
                             sp.edit().putString(ConstantSp.CONTACT,sContact).commit();
                             sp.edit().putString(ConstantSp.PASSWORD,sPassword).commit();
                             sp.edit().putString(ConstantSp.GENDER,sGender).commit();
@@ -105,5 +106,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        finish();
     }
 }
